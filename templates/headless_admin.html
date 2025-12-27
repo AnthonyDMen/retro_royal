@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Headless Admin Hub</title>
+    <style>
+      :root {
+        --bg: #0b0f14;
+        --bg-2: #10151c;
+        --panel: #141a23;
+        --panel-2: #11161d;
+        --border: #263041;
+        --text: #e8ecf3;
+        --muted: #99a4b3;
+        --accent: #4ce1a1;
+        --accent-2: #3bb5ff;
+        --warn: #f6b26b;
+        --danger: #ff5c7a;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--text);
+        font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+        background:
+          radial-gradient(800px 300px at 15% 10%, rgba(76, 225, 161, 0.14), transparent 55%),
+          radial-gradient(600px 260px at 85% 0%, rgba(59, 181, 255, 0.12), transparent 60%),
+          linear-gradient(180deg, #0b0f14 0%, #0f141a 100%);
+      }
+
+      .page {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 32px 20px 48px;
+      }
+
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 28px;
+        letter-spacing: 0.6px;
+      }
+
+      .pill {
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+        background: rgba(76, 225, 161, 0.2);
+        border: 1px solid rgba(76, 225, 161, 0.4);
+        color: var(--accent);
+      }
+
+      .pill.match {
+        background: rgba(255, 92, 122, 0.15);
+        border-color: rgba(255, 92, 122, 0.5);
+        color: var(--danger);
+        animation: pulse 1.6s ease-in-out infinite;
+      }
+
+      .grid {
+        display: grid;
+        gap: 18px;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      }
+
+      .card {
+        background: linear-gradient(180deg, var(--panel), var(--panel-2));
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 18px;
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.3);
+        animation: rise 0.6s ease-out;
+      }
+
+      .card h2 {
+        margin: 0 0 12px;
+        font-size: 16px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--muted);
+      }
+
+      .stat {
+        font-size: 26px;
+        font-weight: 700;
+      }
+
+      .sub {
+        font-size: 13px;
+        color: var(--muted);
+        margin-top: 4px;
+      }
+
+      .row {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+        font-size: 14px;
+      }
+
+      .actions {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      button {
+        background: rgba(76, 225, 161, 0.15);
+        border: 1px solid rgba(76, 225, 161, 0.45);
+        color: var(--text);
+        padding: 12px 14px;
+        border-radius: 10px;
+        font-weight: 600;
+        letter-spacing: 0.4px;
+        cursor: pointer;
+        transition: transform 0.12s ease, border-color 0.2s ease;
+      }
+
+      button:hover {
+        transform: translateY(-1px);
+        border-color: rgba(76, 225, 161, 0.8);
+      }
+
+      button.secondary {
+        background: rgba(59, 181, 255, 0.12);
+        border-color: rgba(59, 181, 255, 0.45);
+      }
+
+      button.danger {
+        background: rgba(255, 92, 122, 0.12);
+        border-color: rgba(255, 92, 122, 0.45);
+      }
+
+      .players {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        max-height: 280px;
+        overflow: auto;
+        padding-right: 4px;
+      }
+
+      .player {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 12px;
+        border-radius: 12px;
+        border: 1px solid rgba(38, 48, 65, 0.6);
+        background: rgba(11, 15, 20, 0.5);
+      }
+
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        background: var(--muted);
+      }
+
+      .dot.ready {
+        background: var(--accent);
+        box-shadow: 0 0 10px rgba(76, 225, 161, 0.5);
+      }
+
+      .dot.waiting {
+        background: var(--warn);
+      }
+
+      .token {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        margin-top: 12px;
+      }
+
+      input[type="password"] {
+        flex: 1;
+        background: rgba(11, 15, 20, 0.8);
+        border: 1px solid var(--border);
+        color: var(--text);
+        padding: 10px 12px;
+        border-radius: 10px;
+      }
+
+      .note {
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .toast {
+        margin-top: 10px;
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      @keyframes rise {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 0 0 rgba(255, 92, 122, 0.2);
+        }
+        50% {
+          box-shadow: 0 0 18px rgba(255, 92, 122, 0.4);
+        }
+        100% {
+          box-shadow: 0 0 0 rgba(255, 92, 122, 0.2);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header>
+        <div>
+          <h1>Headless Admin Hub</h1>
+          <div class="note">Lobby controls and live status for this server.</div>
+        </div>
+        <div id="modePill" class="pill">Lobby</div>
+      </header>
+
+      <section class="grid">
+        <div class="card">
+          <h2>Status</h2>
+          <div class="stat" id="statusHeadline">Waiting for players</div>
+          <div class="sub" id="statusDetail">Lobby open</div>
+          <div class="row">
+            <span>Players Ready</span>
+            <span id="readyCount">0 / 0</span>
+          </div>
+          <div class="row">
+            <span>Join Lock</span>
+            <span id="joinLock">Open</span>
+          </div>
+          <div class="row">
+            <span>Auto Start</span>
+            <span id="autoRule">>=2 ready, 30s delay</span>
+          </div>
+          <div class="row">
+            <span>Auto-start In</span>
+            <span id="autoCountdown">--</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Controls</h2>
+          <div class="actions">
+            <button id="startBtn">Start Match</button>
+            <button id="resetBtn" class="secondary">Reset Lobby</button>
+            <button id="lockBtn" class="danger">Lock Lobby</button>
+          </div>
+          <div class="token">
+            <input id="tokenInput" type="password" placeholder="Admin token (optional)" />
+          </div>
+          <div class="toast" id="actionToast">Idle</div>
+        </div>
+
+        <div class="card">
+          <h2>Players</h2>
+          <div class="players" id="playersList"></div>
+          <div class="note" id="playerNote">No players connected.</div>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      const modePill = document.getElementById("modePill");
+      const statusHeadline = document.getElementById("statusHeadline");
+      const statusDetail = document.getElementById("statusDetail");
+      const readyCount = document.getElementById("readyCount");
+      const joinLock = document.getElementById("joinLock");
+      const autoRule = document.getElementById("autoRule");
+      const autoCountdown = document.getElementById("autoCountdown");
+      const playersList = document.getElementById("playersList");
+      const playerNote = document.getElementById("playerNote");
+      const actionToast = document.getElementById("actionToast");
+      const tokenInput = document.getElementById("tokenInput");
+      const lockBtn = document.getElementById("lockBtn");
+      let lobbyLocked = false;
+
+      tokenInput.value = localStorage.getItem("adminToken") || "";
+      tokenInput.addEventListener("input", () => {
+        localStorage.setItem("adminToken", tokenInput.value);
+      });
+
+      async function post(path, body) {
+        const token = tokenInput.value.trim();
+        const res = await fetch(path, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Admin-Token": token,
+          },
+          body: JSON.stringify(body || {}),
+        });
+        return res.json();
+      }
+
+      function setToast(message, ok) {
+        actionToast.textContent = message;
+        actionToast.style.color = ok ? "var(--accent)" : "var(--warn)";
+      }
+
+      document.getElementById("startBtn").addEventListener("click", async () => {
+        try {
+          const res = await post("/start", {});
+          setToast(res.ok ? "Match start requested." : "Start rejected.", !!res.ok);
+        } catch (err) {
+          setToast("Start failed.", false);
+        }
+      });
+
+      document.getElementById("resetBtn").addEventListener("click", async () => {
+        try {
+          const res = await post("/reset", {});
+          setToast(res.ok ? "Lobby reset requested." : "Reset rejected.", !!res.ok);
+        } catch (err) {
+          setToast("Reset failed.", false);
+        }
+      });
+
+      lockBtn.addEventListener("click", async () => {
+        try {
+          const res = await post("/lock", { locked: !lobbyLocked });
+          if (res.ok) {
+            lobbyLocked = !!res.locked;
+          }
+          setToast(res.ok ? "Lobby lock updated." : "Lock rejected.", !!res.ok);
+        } catch (err) {
+          setToast("Lock failed.", false);
+        }
+      });
+
+      function renderPlayers(players) {
+        if (!players.length) {
+          playersList.innerHTML = "";
+          playerNote.style.display = "block";
+          return;
+        }
+        playerNote.style.display = "none";
+        playersList.innerHTML = players
+          .map((p) => {
+            const ready = p.ready;
+            const dotClass = ready ? "dot ready" : "dot waiting";
+            const name = p.name || "Player";
+            const char = p.char_name || "classic";
+            return `
+              <div class="player">
+                <div class="${dotClass}"></div>
+                <div>
+                  <div>${name}</div>
+                  <div class="note">Char: ${char}</div>
+                </div>
+              </div>
+            `;
+          })
+          .join("");
+      }
+
+      async function refresh() {
+        try {
+          const res = await fetch("/status");
+          const data = await res.json();
+          const players = (data.lobby && data.lobby.players) || [];
+          const ready = data.ready_count || 0;
+          const total = players.length;
+          const matchActive = !!data.match_active;
+          const joinLocked = !!data.join_locked;
+          lobbyLocked = !!data.lobby_locked;
+          const cfg = data.config || {};
+          const startDelay = Math.round(cfg.start_delay || 0);
+          const minPlayers = cfg.min_players || 2;
+          const readyRequired = cfg.ready_required !== false;
+          const countdown = data.auto_start_in;
+          readyCount.textContent = `${ready} / ${total}`;
+          joinLock.textContent = joinLocked ? "Locked" : "Open";
+          autoRule.textContent = readyRequired
+            ? `>=${minPlayers} ready, ${startDelay}s delay`
+            : `>=${minPlayers} players, ${startDelay}s delay`;
+          if (countdown === null || countdown === undefined) {
+            autoCountdown.textContent = "Paused";
+          } else {
+            autoCountdown.textContent = `${countdown}s`;
+          }
+          lockBtn.textContent = lobbyLocked ? "Unlock Lobby" : "Lock Lobby";
+          lockBtn.classList.toggle("danger", !lobbyLocked);
+          lockBtn.classList.toggle("secondary", lobbyLocked);
+          if (matchActive) {
+            modePill.textContent = "Match Live";
+            modePill.classList.add("match");
+            statusHeadline.textContent = "Match running";
+            statusDetail.textContent = `${data.match_player_count || 0} players in match`;
+            autoCountdown.textContent = "In match";
+          } else {
+            modePill.textContent = "Lobby";
+            modePill.classList.remove("match");
+            statusHeadline.textContent = total ? "Waiting for ready" : "Waiting for players";
+            statusDetail.textContent = total
+              ? `${ready} ready of ${total}`
+              : "Lobby open";
+          }
+          renderPlayers(players);
+        } catch (err) {
+          statusHeadline.textContent = "Server offline";
+          statusDetail.textContent = "Unable to reach /status";
+          modePill.textContent = "Disconnected";
+          modePill.classList.remove("match");
+        }
+      }
+
+      refresh();
+      setInterval(refresh, 1000);
+    </script>
+  </body>
+</html>
