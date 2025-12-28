@@ -1,24 +1,21 @@
-# ---- Python ----
+# Python
 __pycache__/
 *.py[cod]
 *.pyd
-*.log
 
-# ---- Virtual envs ----
+# Virtual envs
 .venv/
 venv/
-ENV/
-env/
 
-# ---- Build / packaging ----
+# Build artifacts
 dist/
 build/
 *.spec
 
-# ---- IDE ----
+# IDE
 .vscode/
 .idea/
 
-# ---- OS ----
+# OS
 .DS_Store
 Thumbs.db
