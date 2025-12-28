@@ -1,7 +1,8 @@
 import pygame
 from pathlib import Path
+from resource_path import resource_path
 
-ASSET_DIR = Path(__file__).parent
+ASSET_DIR = Path(resource_path("minigames", "block_duel"))
 BACKGROUND = ASSET_DIR / "background.png"
 
 CELL = 24

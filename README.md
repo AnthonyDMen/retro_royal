@@ -43,6 +43,30 @@ python boot.py
 
 ---
 
+## Building Executables
+
+Install PyInstaller once (inside your virtual environment):
+
+```bash
+pip install pyinstaller
+```
+
+**Windows:**
+
+```bat
+scripts\build_windows.bat
+```
+
+**Linux:**
+
+```bash
+./scripts/build_linux.sh
+```
+
+Build output is placed in `dist/`.
+
+---
+
 ## 🕹 Multiplayer
 
 Retro Royal supports:
@@ -70,15 +94,9 @@ Retro Royal is released under the MIT License.
 
 ---
 
-## 📸 Screenshots & Media
-
-Add relevant screenshots and video here to show gameplay.
-
----
-
 ## 🤝 Contributing
 
-Just the start, a foundation to an idea where anything can change.
+This is just the start, a foundation to an idea where anything can change.
 
 ---
 

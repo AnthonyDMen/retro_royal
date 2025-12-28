@@ -9,6 +9,7 @@ from scene_manager import Scene
 from content_registry import load_game_fonts
 from game_context import GameContext
 from minigames.shared.end_banner import EndBanner
+from resource_path import resource_path
 
 TITLE = "Kalah Duel (Mancala)"
 MINIGAME_ID = "kalah_duel"
@@ -113,7 +114,7 @@ class KalahDuelScene(Scene):
         self.post_pause = 0.0  # short pause after a move ends
 
         # assets beside this file
-        here = Path(__file__).parent
+        here = Path(resource_path("minigames", "kalah_duel"))
         self._bg = self._load_background(here / "background.png")
         self._spritesheet = self._load_spritesheet(here / "spritesheet.png")
         # two-row stones sheet: row 0 = idle, row 1 = glow

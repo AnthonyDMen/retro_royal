@@ -11,9 +11,10 @@ Handles:
 
 import pygame, random, time, importlib.util, sys
 from pathlib import Path
+from resource_path import resource_path
 
 # --- directories ---
-ROOT = Path(__file__).parent
+ROOT = Path(resource_path())
 AUDIO_PATH = ROOT / "audio"
 SFX_PATH = AUDIO_PATH / "sfx"
 MUSIC_PATH = AUDIO_PATH / "music"

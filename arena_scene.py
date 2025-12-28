@@ -6,11 +6,12 @@ from sound_engine import play_step, load_map_profile
 from game_context import GameContext
 from pause_menu import PauseMenuScene
 from game_modes import ArcadeController, TournamentController
+from resource_path import resource_path
 
 
 
 # === Constants / Paths ===
-ROOT = Path(__file__).parent
+ROOT = Path(resource_path())
 MAP_DIR = ROOT / "maps" / "test_arena"
 CHAR_DIR = ROOT / "characters" / "hero"
 
@@ -377,7 +378,7 @@ class ArenaScene(Scene):
 
 
     def _discover_minigames(self):
-        base = Path(__file__).parent / "minigames"
+        base = Path(resource_path("minigames"))
         valid = []
         if not base.exists():
             return valid
@@ -407,7 +408,7 @@ class ArenaScene(Scene):
         return valid
 
     def _discover_characters(self):
-        chars_root = Path(__file__).parent / "characters"
+        chars_root = Path(resource_path("characters"))
         if not chars_root.exists():
             return []
         # Sort for deterministic ordering across processes.

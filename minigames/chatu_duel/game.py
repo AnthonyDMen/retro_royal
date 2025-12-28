@@ -8,11 +8,12 @@ import pygame
 from scene_manager import Scene
 from content_registry import load_game_fonts
 from game_context import GameContext
+from resource_path import resource_path
 
 TITLE = "Chatu Duel"
 MINIGAME_ID = "chatu_duel"
 
-ASSET_DIR = Path(__file__).parent
+ASSET_DIR = Path(resource_path("minigames", "chatu_duel"))
 BACKGROUND = ASSET_DIR / "background.png"  # baked board art
 SPRITESHEET = (
     ASSET_DIR / "spritesheet.png"

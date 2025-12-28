@@ -3,6 +3,7 @@ import os, math, random
 import pygame
 from scene_manager import Scene
 from game_context import GameContext
+from resource_path import resource_path
 
 MIN_N, MAX_N = 1, 12
 MAX_TRIES = 4
@@ -29,7 +30,7 @@ SLICE = {
 }
 
 def _load_here(*names):
-    here = os.path.dirname(__file__)
+    here = resource_path("minigames", "guess")
     for n in names:
         p = os.path.join(here, n)
         if os.path.isfile(p):

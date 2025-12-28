@@ -1,5 +1,5 @@
 # minigames/domino_duel/game.py
-import os, random
+import random
 from pathlib import Path
 from typing import Dict, Any, List, Optional, Tuple
 import pygame
@@ -8,6 +8,7 @@ from scene_manager import Scene
 from content_registry import load_game_fonts  # shared font loader
 from game_context import GameContext
 from minigames.shared.end_banner import EndBanner
+from resource_path import resource_path
 
 TITLE = "Domino Duel — Drag Demo"
 MULTIPLAYER_ENABLED = True
@@ -123,7 +124,7 @@ class DominoDuelScene(Scene):
         self.pending_payload = {}
         self._completed = False
 
-        root = Path(os.path.dirname(__file__))
+        root = Path(resource_path("minigames", "domino_duel"))
         self.background = pygame.image.load(str(root / BACKGROUND_NAME)).convert_alpha()
         self.sheet = pygame.image.load(str(root / SPRITESHEET_NAME)).convert_alpha()
         self.tile_surfs = _generate_tileset_surfaces(self.sheet)

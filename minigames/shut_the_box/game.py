@@ -1,5 +1,6 @@
 # minigames/shut_the_box/game.py
 import pygame, random, itertools, time
+from resource_path import resource_path
 
 TITLE = "Shut the Box"
 MINIGAME_ID = "shut_the_box"
@@ -23,8 +24,8 @@ ROLL_LIMIT = 30  # total rolls per round (shared)
 # We will try spritesheet.png first (your stated convention), then fall back to the
 # original poker dice name if present.
 DICE_SHEET_PATHS = [
-    "minigames/shut_the_box/spritesheet.png",
-    "minigames/shut_the_box/spritesheetpokerdice.png",
+    resource_path("minigames", "shut_the_box", "spritesheet.png"),
+    resource_path("minigames", "shut_the_box", "spritesheetpokerdice.png"),
 ]
 
 # The sheet format we assume (based on your poker_dice sheet):
@@ -258,7 +259,9 @@ class ShutTheBoxScene(Scene):
         self.banner_small = pygame.font.SysFont(None, 28)
 
         # Background
-        self.bg = pygame.image.load("minigames/shut_the_box/background.png").convert()
+        self.bg = pygame.image.load(
+            resource_path("minigames", "shut_the_box", "background.png")
+        ).convert()
 
         # Tile rects (final tuned by you)
         self.tiles_player_rects = [

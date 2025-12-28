@@ -4,8 +4,8 @@
 import os, math, random, pygame
 from typing import Dict, Tuple
 from scene_manager import Scene
-from pathlib import Path
 from game_context import GameContext
+from resource_path import resource_path
 
 MULTIPLAYER_ENABLED = True
 
@@ -91,13 +91,14 @@ class RPSScene(Scene):
         self.font = pygame.font.SysFont(None, 36)
         self.small = pygame.font.SysFont(None, 24)
 
+        default_sheet = resource_path("minigames", "rps_duel", "spritesheet.png")
         if spritesheet_path is None:
-            spritesheet_path = str(Path(__file__).parent / "spritesheet.png")
+            spritesheet_path = default_sheet
 
         self.atlas = _slice(
             _try_load([
                 spritesheet_path,
-                str(Path(__file__).parent / "spritesheet.png"),
+                default_sheet,
             ])
         )
 

@@ -2,6 +2,7 @@
 import os, random, pygame, uuid
 from scene_manager import Scene
 from game_context import GameContext
+from resource_path import resource_path
 
 TITLE = "Battle Convoy"
 MINIGAME_ID = "battle_convoy"
@@ -522,7 +523,7 @@ class BattleConvoyScene(Scene):
         self.local_starts = (self.local_id == ordered_parts[0]) if ordered_parts else True
         self.battle_started = False
 
-        here = os.path.dirname(__file__)
+        here = resource_path("minigames", "battle_convoy")
         bg_path = os.path.join(here, BACKGROUND_FILE)
         ss_path = os.path.join(here, SPRITESHEET_FILE)
         if not os.path.exists(bg_path):

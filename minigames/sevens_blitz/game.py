@@ -14,6 +14,7 @@ from dataclasses import dataclass
 from typing import Optional, Dict, Any, List
 
 import pygame
+from resource_path import resource_path
 
 TITLE = "Sevens Blitz"
 MINIGAME_ID = "sevens_blitz"
@@ -165,7 +166,7 @@ class SevensBlitzScene(Scene):
         self.font = pygame.font.SysFont(None, 22)
         self.font_big = pygame.font.SysFont(None, 32)
 
-        here = os.path.dirname(__file__)
+        here = resource_path("minigames", "sevens_blitz")
         self.sheet = pygame.image.load(
             os.path.join(here, "spritesheet.png")
         ).convert_alpha()

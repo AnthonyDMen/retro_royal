@@ -17,6 +17,7 @@ from arena_scene import ArenaScene
 from scene_manager import Scene
 from sound_engine import load_map_profile
 from minigames.shared import discover_multiplayer_minigames, pick_minigame_wheel, load_minigame_multiplayer
+from resource_path import resource_path
 
 # Track the currently running lobby so reopening host menus does not create duplicates.
 ACTIVE_LOBBY_SERVER = None
@@ -87,7 +88,7 @@ class LobbyServer:
         self.auto_duel_timer = 0.0
         self.auto_duel_interval = (3.0, 5.0)
         # Discover multiplayer-enabled minigames (falls back to a validated list).
-        self.available_minigames = discover_multiplayer_minigames(Path(__file__).parent / "minigames")
+        self.available_minigames = discover_multiplayer_minigames(Path(resource_path("minigames")))
         self.pending_duels: Dict[str, Dict] = {}
         self._duel_resolve_timeout = 60.0
         self.pending_duel_requests: Dict[str, Dict] = {}
@@ -343,7 +344,7 @@ class LobbyServer:
                 player_copy = [p.to_dict() for p in self.state.players]
                 # Lock multiplayer to test_arena/tournament.
                 map_name = "test_arena"
-                map_json = Path(__file__).parent / "maps" / map_name / "map.json"
+                map_json = Path(resource_path("maps", map_name, "map.json"))
                 spawns = self._build_spawns_from_map(map_json, seed, len(player_copy))
                 # assign player_ids to spawn slots deterministically
                 for idx, p in enumerate(player_copy):
@@ -977,12 +978,12 @@ class LobbyServer:
         wheel = pick_minigame_wheel(
             rng,
             self.available_minigames,
-            base_dir=Path(__file__).parent / "minigames",
+            base_dir=Path(resource_path("minigames")),
         )
         if not wheel:
             wheel = list(self.available_minigames)
         selected_entry = rng.choice(wheel) if wheel else "rps_duel"
-        mp_module = load_minigame_multiplayer(selected_entry, Path(__file__).parent / "minigames")
+        mp_module = load_minigame_multiplayer(selected_entry, Path(resource_path("minigames")))
         payload = {
             "type": "start_duel",
             "participants": [pid_a, pid_b],

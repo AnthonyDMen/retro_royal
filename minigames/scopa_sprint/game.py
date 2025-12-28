@@ -17,6 +17,7 @@ import pygame
 from game_context import GameContext
 from scene_manager import Scene
 from minigames.shared.end_banner import EndBanner
+from resource_path import resource_path
 
 TITLE = "Scopa Sprint"
 MINIGAME_ID = "scopa_sprint"
@@ -87,7 +88,7 @@ class CardRenderer:
         self.font = font
         self.small = small
 
-        here = os.path.dirname(__file__)
+        here = resource_path("minigames", "scopa_sprint")
         self.bg = try_load(os.path.join(here, "background.png")) or try_load(DEMO_BG)
         self.sheet = try_load(os.path.join(here, "spritesheet.png")) or try_load(
             DEMO_SHEET

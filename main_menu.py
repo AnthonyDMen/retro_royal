@@ -6,6 +6,7 @@ from arena_scene import ArenaScene
 from pathlib import Path
 from scoreboard import draw_highscores
 from multiplayer import LobbyServer, LobbyClient, MultiplayerArenaScene
+from resource_path import resource_path
 
 FADE_SPEED = 200
 
@@ -182,7 +183,7 @@ class MapCharacterSelect(Scene):
         self.font = pygame.font.SysFont(None, 28)
         self.small = pygame.font.SysFont(None, 22)
 
-        root = Path(__file__).parent
+        root = Path(resource_path())
         maps_path = root / "maps"
         chars_path = root / "characters"
 
@@ -336,7 +337,7 @@ class MapCharacterSelect(Scene):
         return modes[self.mode_idx % len(modes)]
 
     def _build_map_preview(self, map_name):
-        ROOT = Path(__file__).parent
+        ROOT = Path(resource_path())
         MAP_DIR = ROOT / "maps" / map_name
         map_json = MAP_DIR / "map.json"
         sheet_path = MAP_DIR / "spritesheet.png"
@@ -423,7 +424,7 @@ class MapCharacterSelect(Scene):
         char_name = self.characters[self.char_idx]
         if char_name.startswith("("):
             return
-        ROOT = Path(__file__).parent
+        ROOT = Path(resource_path())
         char_dir = ROOT / "characters" / char_name
         idle_path = char_dir / "idle.png"
         if not idle_path.exists():
@@ -669,7 +670,7 @@ class MultiplayerHostScene(Scene):
         return all(p.get("ready") for p in players)
 
     def _load_maps(self):
-        root = Path(__file__).parent / "maps"
+        root = Path(resource_path("maps"))
         if not root.exists():
             return ["test_arena"]
         names = [d.name for d in root.iterdir() if d.is_dir()]
@@ -723,14 +724,14 @@ class MultiplayerHostScene(Scene):
         return None
 
     def _load_characters(self):
-        root = Path(__file__).parent / "characters"
+        root = Path(resource_path("characters"))
         if not root.exists():
             return ["classic"]
         names = [d.name for d in root.iterdir() if d.is_dir()]
         return sorted(names) if names else ["classic"]
 
     def _load_maps(self):
-        root = Path(__file__).parent / "maps"
+        root = Path(resource_path("maps"))
         if not root.exists():
             return ["test_arena"]
         names = [d.name for d in root.iterdir() if d.is_dir()]
@@ -1134,7 +1135,7 @@ class MultiplayerWaitingScene(Scene):
         return None
 
     def _load_characters(self):
-        root = Path(__file__).parent / "characters"
+        root = Path(resource_path("characters"))
         if not root.exists():
             return ["classic"]
         names = [d.name for d in root.iterdir() if d.is_dir()]

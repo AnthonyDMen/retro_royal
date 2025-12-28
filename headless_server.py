@@ -14,6 +14,7 @@ from typing import Any, Dict, Optional
 from flask import Flask, jsonify, request, abort, render_template
 
 from multiplayer import LobbyServer
+from resource_path import resource_path
 
 
 @dataclass
@@ -220,7 +221,7 @@ class HeadlessController:
     def _build_match(self, players: list[Dict[str, Any]], seed: Optional[str] = None):
         cfg = self.get_config()
         map_name = cfg.get("map_name") or "test_arena"
-        map_json = Path(__file__).parent / "maps" / map_name / "map.json"
+        map_json = Path(resource_path("maps", map_name, "map.json"))
         seed = seed or os.urandom(8).hex()
         spawns = self.server._build_spawns_from_map(map_json, seed, len(players))
         for idx, p in enumerate(players):

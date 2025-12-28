@@ -18,13 +18,14 @@ from scene_manager import Scene
 from content_registry import load_game_fonts
 from game_context import GameContext
 from minigames.shared.end_banner import EndBanner
+from resource_path import resource_path
 
 TITLE = "Dice Duel (Hold ’n’ Roll)"
 MINIGAME_ID = "poker_dice"
 MULTIPLAYER_ENABLED = True
 
 # --- Asset paths (relative) ---
-HERE = os.path.dirname(__file__)
+HERE = resource_path("minigames", "poker_dice")
 SPRITESHEET_PATH = os.path.join(HERE, "spritesheet.png")
 BACKGROUND_PATH  = os.path.join(HERE, "background.png")
 

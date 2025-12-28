@@ -5,6 +5,7 @@ from scene_manager import Scene
 from content_registry import load_game_fonts
 from game_context import GameContext
 from . import graphics
+from resource_path import resource_path
 
 TITLE = "Platform Race"
 MINIGAME_ID = "platform_race"
@@ -17,7 +18,7 @@ JUMP_SPEED = 400
 DEATH_LIMIT = 10
 POST_RESULT_S = 1.5
 
-ASSET_DIR = Path(__file__).parent
+ASSET_DIR = Path(resource_path("minigames", "platform_race"))
 BACKGROUND = ASSET_DIR / "background.png"
 
 

@@ -13,6 +13,7 @@ from scene_manager import Scene
 from content_registry import load_game_fonts
 from game_context import GameContext
 from minigames.shared.end_banner import EndBanner
+from resource_path import resource_path
 
 TITLE = "Bones to 21"
 
@@ -73,6 +74,7 @@ RIB_BL_LEFT_MARGIN = 40  # distance from left edge
 def _find_file(filename: str) -> Path | None:
     here = Path(__file__).resolve()
     candidates = [
+        Path(resource_path("minigames", "bones_21", filename)),
         Path.cwd() / filename,  # current working dir
         here.parent / filename,  # minigames/bones_21/
         here.parent.parent / filename,  # minigames/
