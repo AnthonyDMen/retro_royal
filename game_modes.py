@@ -1,7 +1,7 @@
 import random
 import math
-import importlib
 import pygame
+from minigame_loader import load_minigame_module
 
 INTERACT_RADIUS = 42
 
@@ -37,10 +37,12 @@ class BaseModeController:
         pass
 
     def _launch_minigame(self, minigame):
-        try:
-            mod = importlib.import_module(f"minigames.{minigame}.game")
-        except Exception as exc:
-            print(f"[Mode] Import failed for {minigame}: {exc}")
+        mod = load_minigame_module(minigame)
+        if not mod:
+            print(f"[Mode] Import failed for {minigame}")
+            return
+        if not hasattr(mod, "launch"):
+            print(f"[Mode] Missing launch() for {minigame}")
             return
 
         def on_exit(context):

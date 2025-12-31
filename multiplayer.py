@@ -17,6 +17,7 @@ from arena_scene import ArenaScene
 from scene_manager import Scene
 from sound_engine import load_map_profile
 from minigames.shared import discover_multiplayer_minigames, pick_minigame_wheel, load_minigame_multiplayer
+from minigame_loader import load_minigame_module
 from resource_path import resource_path
 
 # Track the currently running lobby so reopening host menus does not create duplicates.
@@ -2382,10 +2383,12 @@ class MultiplayerArenaScene(ArenaScene):
     def _launch_duel_minigame(self, entry: Optional[str], duel_id: Optional[str] = None, participants=None):
         if not entry:
             return
-        try:
-            mod = __import__(f"minigames.{entry}.game", fromlist=["game"])
-        except Exception as exc:
-            self._log_local(f"Failed to import minigame {entry}: {exc}")
+        mod = load_minigame_module(entry)
+        if not mod:
+            self._log_local(f"Failed to import minigame {entry}")
+            return
+        if not hasattr(mod, "launch"):
+            self._log_local(f"Minigame {entry} missing launch()")
             return
 
         def on_exit(ctx):

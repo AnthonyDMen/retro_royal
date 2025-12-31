@@ -1,11 +1,11 @@
 import json, math, time, pygame, random
-import importlib, importlib.util
 from pathlib import Path
 from scene_manager import Scene
 from sound_engine import play_step, load_map_profile
 from game_context import GameContext
 from pause_menu import PauseMenuScene
 from game_modes import ArcadeController, TournamentController
+from minigame_loader import load_minigame_module
 from resource_path import resource_path
 
 
@@ -390,19 +390,7 @@ class ArenaScene(Scene):
             game_file = d / "game.py"
             if not game_file.exists():
                 continue
-            mod = None
-            module_name = f"minigames.{d.name}.game"
-            try:
-                mod = importlib.import_module(module_name)
-            except Exception:
-                try:
-                    spec = importlib.util.spec_from_file_location(f"_minigame_{d.name}", game_file)
-                    if not spec or not spec.loader:
-                        continue
-                    mod = importlib.util.module_from_spec(spec)
-                    spec.loader.exec_module(mod)
-                except Exception:
-                    mod = None
+            mod = load_minigame_module(d.name, base_dir=base)
             if mod and hasattr(mod, "launch"):
                 valid.append(d.name)
         return valid
