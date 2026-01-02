@@ -43,30 +43,6 @@ python boot.py
 
 ---
 
-## Building Executables
-
-Install PyInstaller once (inside your virtual environment):
-
-```bash
-pip install pyinstaller
-```
-
-**Windows:**
-
-```bat
-scripts\build_windows.bat
-```
-
-**Linux:**
-
-```bash
-./scripts/build_linux.sh
-```
-
-Build output is placed in `dist/`.
-
----
-
 ## 🕹 Multiplayer
 
 Retro Royal supports:
@@ -83,8 +59,20 @@ Retro Royal supports:
 
 A simple web front end supports control of headless servers and basic status monitoring.
 
-**🔗 Front End URL (placeholder):**
-https://front-end-placeholder.url
+**🔗 Front End URL:**
+https://regulationapp.com/
+
+---
+
+## ⚠️ Executable Disclaimer
+
+Executable builds are currently in testing and still under active development.
+
+To find the Windows executable from a GitHub Release tag, download the release asset and look for:
+
+```
+dist\boot\boot.exe
+```
 
 ---
 
